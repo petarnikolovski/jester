@@ -8,6 +8,14 @@ import (
 	"net/http"
 )
 
+// listLevels godoc
+// @Summary      List possible levels for sections
+// @Description  get all levels
+// @Tags         levels
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  []pkg.sectionLevel
+// @Router       /section/levels [get]
 func listLevels(c *gin.Context) {
 	levels, err := pkg.GetLevels(postgres.DB)
 	if err != nil {
