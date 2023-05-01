@@ -1,11 +1,11 @@
 package models
 
 import (
-	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"html"
 	"jester/databases/db"
+	"jester/logger"
 	"strings"
 )
 
@@ -22,7 +22,7 @@ func (u *User) Save() (*User, error) {
 	}
 	result := db.Create(&u)
 	if result.Error != nil {
-		log.Error(result.Error)
+		logger.Log.Error(result.Error)
 		return &User{}, result.Error
 	}
 	return u, nil

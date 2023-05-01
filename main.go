@@ -4,7 +4,6 @@ import (
 	"github.com/Depado/ginprom"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	log "github.com/sirupsen/logrus"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"jester/api/probes"
@@ -12,6 +11,7 @@ import (
 	"jester/databases/db"
 	"jester/databases/postgres"
 	"jester/docs"
+	"jester/logger"
 )
 
 // @title           Jester API
@@ -62,19 +62,20 @@ func serve() {
 func loadDotEnvFile() {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Warn(err)
+		logger.Log.Warn(err)
 	}
 }
 
 func main() {
 	loadDotEnvFile()
+	logger.SetupLogger()
 
 	database, err := postgres.Connect()
 	db.SetDB(database)
 
 	sqlDB, err := database.DB()
 	if err != nil {
-		log.Panic(err)
+		logger.Log.Panic(err)
 	}
 	defer sqlDB.Close()
 
