@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Depado/ginprom"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
@@ -34,6 +35,18 @@ import (
 // @externalDocs.url          https://jesthub.sh/docs
 func serve() {
 	router := gin.Default()
+
+	prometheus := ginprom.New(
+		ginprom.Engine(router),
+		ginprom.Subsystem("gin"),
+		ginprom.Path("/metrics"),
+		ginprom.Ignore(
+			"/metrics",
+			"/ready",
+			"/healthz",
+		),
+	)
+	router.Use(prometheus.Instrument())
 
 	docs.SwaggerInfo.BasePath = "/api/v1"
 
