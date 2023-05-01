@@ -3,7 +3,6 @@ package v1
 import (
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
-	"jester/databases/db"
 	"jester/pkg"
 	"net/http"
 )
@@ -17,7 +16,7 @@ import (
 // @Success      200  {object}  []pkg.sectionLevel
 // @Router       /section/levels [get]
 func listLevels(c *gin.Context) {
-	levels, err := pkg.GetLevels(db.GetDB())
+	levels, err := pkg.GetLevels()
 	if err != nil {
 		log.Panic(err)
 	}

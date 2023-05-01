@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	"gorm.io/gorm"
+	"jester/databases/db"
 	"jester/models"
 )
 
@@ -10,9 +10,9 @@ type sectionLevel struct {
 	Name string `json:"name"`
 }
 
-func GetLevels(db *gorm.DB) ([]sectionLevel, error) {
+func GetLevels() ([]sectionLevel, error) {
 	var levels []models.Level
-	results := db.Find(&levels)
+	results := db.GetDB().Find(&levels)
 
 	var sectionLevels []sectionLevel
 	for _, level := range levels {
