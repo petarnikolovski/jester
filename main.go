@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/Depado/ginprom"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -12,6 +13,7 @@ import (
 	"jester/databases/postgres"
 	"jester/docs"
 	"jester/logger"
+	"os"
 )
 
 // @title           Jester API
@@ -56,7 +58,21 @@ func serve() {
 	// Look into https://github.com/swaggo/swag/issues/1568
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.Run()
+	router.Run(getServerAddress())
+}
+
+func getServerAddress() string {
+	listenAddress := os.Getenv("LISTEN_ADDRESS")
+	if listenAddress == "" {
+		listenAddress = "127.0.0.1"
+	}
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	return fmt.Sprintf("%s:%s", listenAddress, port)
 }
 
 func loadDotEnvFile() {
