@@ -2,13 +2,14 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	log "github.com/sirupsen/logrus"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"jester/api/probes"
 	"jester/api/v1"
 	"jester/databases/postgres"
 	"jester/docs"
-	"log"
 )
 
 // @title           Jester API
@@ -28,8 +29,8 @@ import (
 
 // @securityDefinitions.basic  BasicAuth
 
-// @externalDocs.description  OpenAPI
-// @externalDocs.url          https://swagger.io/resources/open-api/
+// @externalDocs.description  JestHub Documentation
+// @externalDocs.url          https://jesthub.sh/docs
 func serve() {
 	router := gin.Default()
 
@@ -44,7 +45,16 @@ func serve() {
 	router.Run()
 }
 
+func loadDotEnvFile() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Warn(err)
+	}
+}
+
 func main() {
+	loadDotEnvFile()
+
 	db, err := postgres.Connect()
 
 	sqlDB, err := db.DB()
