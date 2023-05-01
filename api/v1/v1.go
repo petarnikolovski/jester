@@ -12,6 +12,10 @@ type Error struct {
 	E string `json:"error"`
 }
 
+type LoginResponse struct {
+	Token string `json:"token"`
+}
+
 func Routes(router *gin.Engine) {
 	v1 := router.Group("/api/v1")
 
@@ -25,5 +29,6 @@ func Routes(router *gin.Engine) {
 
 	{
 		auth.POST("/register", register)
+		auth.POST("/login", login)
 	}
 }

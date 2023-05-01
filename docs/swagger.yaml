@@ -34,6 +34,25 @@ info:
   title: Jester API
   version: "1.0"
 paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: post data to get a JWT token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.Error'
+      summary: Login a user
+      tags:
+      - auth
   /auth/register:
     post:
       consumes:

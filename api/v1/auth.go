@@ -32,3 +32,30 @@ func register(c *gin.Context) {
 
 	c.JSON(http.StatusOK, Success{Status: "success"})
 }
+
+// login godoc
+// @Summary      Login a user
+// @Description  post data to get a JWT token
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  Success
+// @Failure		 400  {object}  Error
+// @Router       /auth/login [post]
+func login(c *gin.Context) {
+	var input pkg.LoginUser
+
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, Error{E: err.Error()})
+		return
+	}
+
+	token, err := pkg.Login(input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, Error{E: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, LoginResponse{Token: token})
+}
