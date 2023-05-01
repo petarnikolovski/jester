@@ -5,20 +5,15 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+var database *gorm.DB
 
 func SetDB(db *gorm.DB) {
-	DB = db
+	database = db
 }
 
 func GetDB() *gorm.DB {
-	if DB == nil {
+	if database == nil {
 		log.Panic("Global database instance is not initialized")
 	}
-	return DB
-}
-
-type Database interface {
-	Connect() (*gorm.DB, error)
-	InitDatabase()
+	return database
 }
