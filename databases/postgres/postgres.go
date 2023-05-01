@@ -2,14 +2,12 @@ package postgres
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"jester/models"
-	"log"
 	"os"
 )
-
-var DB *gorm.DB
 
 func Connect() (*gorm.DB, error) {
 	host := os.Getenv("DB_HOST")
@@ -21,11 +19,11 @@ func Connect() (*gorm.DB, error) {
 
 	var err error
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", host, user, password, name, port, sslMode)
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Panic(err)
 	}
-	return DB, err
+	return db, err
 }
 
 func seedLevels(db *gorm.DB) error {
@@ -54,7 +52,7 @@ func seedLevels(db *gorm.DB) error {
 }
 
 func InitDatabase(db *gorm.DB) {
-	err := db.AutoMigrate(&models.Section{}, &models.Level{}, &models.Trick{})
+	err := db.AutoMigrate(&models.User{}, &models.Section{}, &models.Level{}, &models.Trick{})
 	if err != nil {
 		log.Panic(err)
 	}

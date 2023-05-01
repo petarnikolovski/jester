@@ -7,9 +7,19 @@ definitions:
       name:
         type: string
     type: object
+  v1.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  v1.Success:
+    properties:
+      status:
+        type: string
+    type: object
 externalDocs:
-  description: OpenAPI
-  url: https://swagger.io/resources/open-api/
+  description: JestHub Documentation
+  url: https://jesthub.sh/docs
 host: localhost:8080
 info:
   contact:
@@ -24,6 +34,25 @@ info:
   title: Jester API
   version: "1.0"
 paths:
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: post data for user registration
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Success'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.Error'
+      summary: Register a new user
+      tags:
+      - auth
   /section/levels:
     get:
       consumes:
@@ -40,7 +69,7 @@ paths:
             type: array
       summary: List possible levels for sections
       tags:
-      - levels
+      - sections
 securityDefinitions:
   BasicAuth:
     type: basic

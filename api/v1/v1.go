@@ -4,10 +4,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Success struct {
+	Status string `json:"status"`
+}
+
+type Error struct {
+	E string `json:"error"`
+}
+
 func Routes(router *gin.Engine) {
 	v1 := router.Group("/api/v1")
 
+	section := v1.Group("/section")
+
 	{
-		v1.GET("/section/levels", listLevels)
+		section.GET("/levels", listLevels)
+	}
+
+	auth := v1.Group("/auth")
+
+	{
+		auth.POST("/register", register)
 	}
 }

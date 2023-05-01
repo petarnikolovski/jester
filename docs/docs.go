@@ -25,6 +25,35 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/auth/register": {
+            "post": {
+                "description": "post data for user registration",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Register a new user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Success"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/section/levels": {
             "get": {
                 "description": "get all levels",
@@ -35,7 +64,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "levels"
+                    "sections"
                 ],
                 "summary": "List possible levels for sections",
                 "responses": {
@@ -63,6 +92,22 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "v1.Error": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.Success": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                }
+            }
         }
     },
     "securityDefinitions": {
@@ -71,8 +116,8 @@ const docTemplate = `{
         }
     },
     "externalDocs": {
-        "description": "OpenAPI",
-        "url": "https://swagger.io/resources/open-api/"
+        "description": "JestHub Documentation",
+        "url": "https://jesthub.sh/docs"
     }
 }`
 
