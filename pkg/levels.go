@@ -12,7 +12,12 @@ type sectionLevel struct {
 
 func GetLevels() ([]sectionLevel, error) {
 	var levels []models.Level
-	results := db.GetDB().Find(&levels)
+	db, err := db.GetDB()
+	if err != nil {
+		return []sectionLevel{}, err
+	}
+
+	results := db.Find(&levels)
 
 	var sectionLevels []sectionLevel
 	for _, level := range levels {

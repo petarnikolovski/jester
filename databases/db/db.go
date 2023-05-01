@@ -1,7 +1,7 @@
 package db
 
 import (
-	log "github.com/sirupsen/logrus"
+	"errors"
 	"gorm.io/gorm"
 )
 
@@ -11,9 +11,10 @@ func SetDB(db *gorm.DB) {
 	database = db
 }
 
-func GetDB() *gorm.DB {
+func GetDB() (*gorm.DB, error) {
+	var err error
 	if database == nil {
-		log.Panic("Global database instance is not initialized")
+		err = errors.New("Global database instance is not initialized")
 	}
-	return database
+	return database, err
 }

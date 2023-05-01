@@ -48,12 +48,17 @@ func generateToken(user *models.User) (string, error) {
 
 func Login(data LoginUser) (string, error) {
 	user := models.User{}
-	result := db.GetDB().Model(&models.User{}).Where("email = ?", data.Email).Take(&user)
+	db, err := db.GetDB()
+	if err != nil {
+		return "", err
+	}
+
+	result := db.Model(&models.User{}).Where("email = ?", data.Email).Take(&user)
 	if result.Error != nil {
 		return "", result.Error
 	}
 
-	err := verifyPassword(data.Password, user.Password)
+	err = verifyPassword(data.Password, user.Password)
 	if err != nil {
 		return "", err
 	}

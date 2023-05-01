@@ -16,7 +16,11 @@ type User struct {
 }
 
 func (u *User) Save() (*User, error) {
-	result := db.GetDB().Create(&u)
+	db, err := db.GetDB()
+	if err != nil {
+		return &User{}, err
+	}
+	result := db.Create(&u)
 	if result.Error != nil {
 		log.Error(result.Error)
 		return &User{}, result.Error
