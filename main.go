@@ -8,6 +8,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"jester/api/probes"
 	"jester/api/v1"
+	"jester/databases/db"
 	"jester/databases/postgres"
 	"jester/docs"
 )
@@ -55,15 +56,16 @@ func loadDotEnvFile() {
 func main() {
 	loadDotEnvFile()
 
-	db, err := postgres.Connect()
+	database, err := postgres.Connect()
+	db.SetDB(database)
 
-	sqlDB, err := db.DB()
+	sqlDB, err := database.DB()
 	if err != nil {
 		log.Panic(err)
 	}
 	defer sqlDB.Close()
 
-	postgres.InitDatabase(db)
+	postgres.InitDatabase(database)
 
 	serve()
 }

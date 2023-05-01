@@ -2,7 +2,6 @@ package models
 
 import (
 	"gorm.io/gorm"
-	"time"
 )
 
 type Trick struct {
@@ -11,5 +10,4 @@ type Trick struct {
 	Instruction string
 	SectionID   int
 	Section     Section
-	CreatedAt   time.Time
 }

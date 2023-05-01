@@ -2,22 +2,22 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"jester/databases/postgres"
+	log "github.com/sirupsen/logrus"
+	"jester/databases/db"
 	"jester/pkg"
-	"log"
 	"net/http"
 )
 
 // listLevels godoc
 // @Summary      List possible levels for sections
 // @Description  get all levels
-// @Tags         levels
+// @Tags         sections
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  []pkg.sectionLevel
 // @Router       /section/levels [get]
 func listLevels(c *gin.Context) {
-	levels, err := pkg.GetLevels(postgres.DB)
+	levels, err := pkg.GetLevels(db.GetDB())
 	if err != nil {
 		log.Panic(err)
 	}

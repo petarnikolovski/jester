@@ -6,8 +6,8 @@ import (
 )
 
 type sectionLevel struct {
-	ID   uint
-	Name string
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
 }
 
 func GetLevels(db *gorm.DB) ([]sectionLevel, error) {
