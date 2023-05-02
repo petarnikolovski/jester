@@ -33,13 +33,22 @@ func verifyPassword(password, hashedPassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
+type CustomJWTClaims struct {
+	Email string `json:"email"`
+	jwt.RegisteredClaims
+}
+
 func generateToken(user *models.User) (string, error) {
 	tokenDuration, err := strconv.Atoi(os.Getenv("TOKEN_DURATION"))
+	duration := time.Duration(tokenDuration)
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email": user.Email,
-		"exp":   time.Now().Add(time.Hour * time.Duration(tokenDuration)).Unix(),
-	})
+	claims := CustomJWTClaims{
+		user.Email,
+		jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(duration * time.Hour)),
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	apiSecret := []byte(os.Getenv("API_SECRET"))
 	tokenString, err := token.SignedString(apiSecret)

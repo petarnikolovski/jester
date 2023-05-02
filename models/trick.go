@@ -9,5 +9,5 @@ type Trick struct {
 	Description string
 	Instruction string
 	SectionID   int
-	Section     Section
+	Section     Section `gorm:"constraint:OnDelete:CASCADE;"`
 }

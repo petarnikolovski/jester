@@ -20,11 +20,13 @@ func (u *User) Save() (*User, error) {
 	if err != nil {
 		return &User{}, err
 	}
+
 	result := db.Create(&u)
 	if result.Error != nil {
 		logger.Log.Error(result.Error)
 		return &User{}, result.Error
 	}
+
 	return u, nil
 }
 
