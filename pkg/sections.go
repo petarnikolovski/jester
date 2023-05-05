@@ -1,6 +1,8 @@
 package pkg
 
 import (
+	"jester/databases/db"
+	"jester/logger"
 	"jester/models"
 )
 
@@ -22,4 +24,21 @@ func CreateSection(data SectionCreate, user *models.User) (*models.Section, erro
 
 	s, err := section.Save()
 	return s, err
+}
+
+func ListTopLevelSections(user *models.User) ([]models.Section, error) {
+	db, err := db.GetDB()
+	if err != nil {
+		logger.Log.Error(err)
+		return nil, err
+	}
+
+	var topLevelSections []models.Section
+	results := db.Preload("User").Preload("Level").Where("user_id = ? AND section_id IS NULL", user.ID).Find(&topLevelSections)
+	if results.Error != nil {
+		logger.Log.Error(results.Error)
+		return nil, results.Error
+	}
+
+	return topLevelSections, nil
 }

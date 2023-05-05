@@ -15,7 +15,7 @@ import (
 // @Produce      json
 // @Success      200  {object}  models.Section
 // @Failure		 400  {object}  Error
-// @Router       /auth/register [post]
+// @Router       /section [post]
 func createSection(c *gin.Context) {
 	var input pkg.SectionCreate
 
@@ -38,4 +38,29 @@ func createSection(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, section)
+}
+
+// listMainSections godoc
+// @Summary      List top level sections
+// @Description  list top level sections
+// @Tags         sections
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  []models.Section
+// @Failure		 400  {object}  Error
+// @Router       /sections [post]
+func listTopLevelSections(c *gin.Context) {
+	user, ok := c.Get("user")
+	if !ok {
+		c.JSON(http.StatusBadRequest, Error{E: "User not found"})
+		return
+	}
+
+	topLevelSections, err := pkg.ListTopLevelSections(user.(*models.User))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, Error{E: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, topLevelSections)
 }

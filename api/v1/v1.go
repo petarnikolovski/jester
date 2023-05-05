@@ -34,4 +34,8 @@ func Routes(router *gin.Engine) {
 		section.POST("", createSection)
 		section.GET("/levels", listLevels)
 	}
+
+	sections := v1.Group("/sections")
+	sections.Use(middleware.AuthRequired())
+	sections.GET("", listTopLevelSections)
 }
