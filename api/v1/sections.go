@@ -49,7 +49,7 @@ func createSection(c *gin.Context) {
 // @Produce      json
 // @Success      200  {object}  []models.Section
 // @Failure		 400  {object}  Error
-// @Router       /sections [post]
+// @Router       /sections [get]
 func listTopLevelSections(c *gin.Context) {
 	user, ok := c.Get("user")
 	if !ok {
@@ -74,7 +74,7 @@ func listTopLevelSections(c *gin.Context) {
 // @Produce      json
 // @Success      200  {object}  []models.Section
 // @Failure		 400  {object}  Error
-// @Router       /sections [post]
+// @Router       /sections/{sectionId}/children [get]
 func listSubsectionsByParentID(c *gin.Context) {
 	user, ok := c.Get("user")
 	if !ok {

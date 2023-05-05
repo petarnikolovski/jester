@@ -1,5 +1,68 @@
 basePath: /api/v1
 definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Level:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.Section:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
+      id:
+        type: integer
+      level:
+        $ref: '#/definitions/models.Level'
+      levelID:
+        type: integer
+      section:
+        $ref: '#/definitions/models.Section'
+      sectionID:
+        type: integer
+      title:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      updatedAt:
+        type: string
+    type: object
   pkg.sectionLevel:
     properties:
       id:
@@ -72,7 +135,67 @@ paths:
       summary: Register a new user
       tags:
       - auth
-  /section/levels:
+  /sections:
+    get:
+      consumes:
+      - application/json
+      description: list top level sections
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Section'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.Error'
+      summary: List top level sections
+      tags:
+      - sections
+    post:
+      consumes:
+      - application/json
+      description: create a new section or subsection
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Section'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.Error'
+      summary: Create a section or subsection
+      tags:
+      - sections
+  /sections/{sectionId}/children:
+    get:
+      consumes:
+      - application/json
+      description: get child sections
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Section'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.Error'
+      summary: Get child sections
+      tags:
+      - sections
+  /sections/levels:
     get:
       consumes:
       - application/json
