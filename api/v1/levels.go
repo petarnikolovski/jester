@@ -14,7 +14,7 @@ import (
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  []pkg.sectionLevel
-// @Router       /section/levels [get]
+// @Router       /sections/levels [get]
 func listLevels(c *gin.Context) {
 	levels, err := pkg.GetLevels()
 	if err != nil {

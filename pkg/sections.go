@@ -42,3 +42,20 @@ func ListTopLevelSections(user *models.User) ([]models.Section, error) {
 
 	return topLevelSections, nil
 }
+
+func ListSubsectionsByParentID(sectionID *uint, user *models.User) ([]models.Section, error) {
+	db, err := db.GetDB()
+	if err != nil {
+		logger.Log.Error(err)
+		return nil, err
+	}
+
+	var childSections []models.Section
+	results := db.Preload("User").Preload("Level").Where("section_id = ? AND user_id = ?", sectionID, user.ID).Find(&childSections)
+	if results.Error != nil {
+		logger.Log.Error(results.Error)
+		return nil, results.Error
+	}
+
+	return childSections, nil
+}

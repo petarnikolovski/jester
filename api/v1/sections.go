@@ -5,6 +5,7 @@ import (
 	"jester/models"
 	"jester/pkg"
 	"net/http"
+	"strconv"
 )
 
 // createSection godoc
@@ -15,7 +16,7 @@ import (
 // @Produce      json
 // @Success      200  {object}  models.Section
 // @Failure		 400  {object}  Error
-// @Router       /section [post]
+// @Router       /sections [post]
 func createSection(c *gin.Context) {
 	var input pkg.SectionCreate
 
@@ -63,4 +64,37 @@ func listTopLevelSections(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, topLevelSections)
+}
+
+// listSubsectionsByParentID godoc
+// @Summary      Get child sections
+// @Description  get child sections
+// @Tags         sections
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  []models.Section
+// @Failure		 400  {object}  Error
+// @Router       /sections [post]
+func listSubsectionsByParentID(c *gin.Context) {
+	user, ok := c.Get("user")
+	if !ok {
+		c.JSON(http.StatusBadRequest, Error{E: "User not found"})
+		return
+	}
+
+	// This can be a bug on 32 bit platforms - uint is platform specific
+	parentID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, Error{E: "Invalid type for section ID"})
+		return
+	}
+
+	parentIDuint := uint(parentID)
+	subsections, err := pkg.ListSubsectionsByParentID(&parentIDuint, user.(*models.User))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, Error{E: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, subsections)
 }
