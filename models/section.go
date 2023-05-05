@@ -25,6 +25,10 @@ func (s *Section) Save() (*Section, error) {
 		return &Section{}, err
 	}
 
+	if s.LevelID == 2 && s.SectionID == nil {
+		return &Section{}, errors.New("Subsection needs to have a parent section")
+	}
+
 	result := db.Create(&s)
 	if result.Error != nil {
 		logger.Log.Error(result.Error)
