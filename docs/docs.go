@@ -347,8 +347,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "Store and reuse your CLI commands.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	LeftDelim:        "{{",
-	RightDelim:       "}}",
+	//LeftDelim:        "{{",
+	//RightDelim:       "}}",
 }
 
 func init() {

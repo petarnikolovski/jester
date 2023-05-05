@@ -34,6 +34,7 @@ func Routes(router *gin.Engine) {
 		section.GET("", listTopLevelSections)
 		section.POST("", createSection)
 		section.GET("/:id/children", listSubsectionsByParentID)
+		section.POST("/:id/tricks", createTrick)
 		section.GET("/levels", listLevels)
 	}
 }

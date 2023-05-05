@@ -2,10 +2,10 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"jester/api"
 	"jester/models"
 	"jester/pkg"
 	"net/http"
-	"strconv"
 )
 
 // createSection godoc
@@ -19,7 +19,6 @@ import (
 // @Router       /sections [post]
 func createSection(c *gin.Context) {
 	var input pkg.SectionCreate
-
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, Error{E: err.Error()})
@@ -82,15 +81,13 @@ func listSubsectionsByParentID(c *gin.Context) {
 		return
 	}
 
-	// This can be a bug on 32 bit platforms - uint is platform specific
-	parentID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	parentID, err := api.StringToUint(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, Error{E: "Invalid type for section ID"})
 		return
 	}
 
-	parentIDuint := uint(parentID)
-	subsections, err := pkg.ListSubsectionsByParentID(&parentIDuint, user.(*models.User))
+	subsections, err := pkg.ListSubsectionsByParentID(parentID, user.(*models.User))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, Error{E: err.Error()})
 		return
