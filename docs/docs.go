@@ -199,6 +199,38 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/sections/{sectionId}/tricks": {
+            "post": {
+                "description": "list tricks for a subsection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sections"
+                ],
+                "summary": "List tricks for a subsection",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Trick"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Error"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -263,6 +295,41 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.User"
+                },
+                "userID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Trick": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "instruction": {
+                    "type": "string"
+                },
+                "section": {
+                    "$ref": "#/definitions/models.Section"
+                },
+                "sectionID": {
+                    "type": "integer"
                 },
                 "updatedAt": {
                     "type": "string"

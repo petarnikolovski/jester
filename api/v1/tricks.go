@@ -45,3 +45,34 @@ func createTrick(c *gin.Context) {
 
 	c.JSON(http.StatusOK, trick)
 }
+
+// listTricks godoc
+// @Summary      List tricks for a subsection
+// @Description  list tricks for a subsection
+// @Tags         sections
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  []models.Trick
+// @Failure		 400  {object}  Error
+// @Router       /sections/{sectionId}/tricks [post]
+func listTricks(c *gin.Context) {
+	user, ok := c.Get("user")
+	if !ok {
+		c.JSON(http.StatusBadRequest, Error{E: "User not found"})
+		return
+	}
+
+	parentID, err := api.StringToUint(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, Error{E: "Invalid type for section ID"})
+		return
+	}
+
+	tricks, err := pkg.ListTricks(user.(*models.User), parentID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, Error{E: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, tricks)
+}

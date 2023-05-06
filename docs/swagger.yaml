@@ -48,6 +48,29 @@ definitions:
       userID:
         type: integer
     type: object
+  models.Trick:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
+      id:
+        type: integer
+      instruction:
+        type: string
+      section:
+        $ref: '#/definitions/models.Section'
+      sectionID:
+        type: integer
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
   models.User:
     properties:
       createdAt:
@@ -193,6 +216,27 @@ paths:
           schema:
             $ref: '#/definitions/v1.Error'
       summary: Get child sections
+      tags:
+      - sections
+  /sections/{sectionId}/tricks:
+    post:
+      consumes:
+      - application/json
+      description: list tricks for a subsection
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Trick'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.Error'
+      summary: List tricks for a subsection
       tags:
       - sections
   /sections/levels:
