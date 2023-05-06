@@ -25,7 +25,11 @@ func (t *Trick) Save() (*Trick, error) {
 	}
 
 	section := Section{}
-	db.Where("id = ?", t.SectionID).First(&section)
+	result := db.Where("id = ?", t.SectionID).First(&section)
+	if result.Error != nil {
+		logger.Log.Error(result.Error)
+		return nil, result.Error
+	}
 	if *section.UserID != *t.UserID {
 		return nil, errors.New("User does not own the section")
 	}
@@ -36,7 +40,7 @@ func (t *Trick) Save() (*Trick, error) {
 		return nil, errors.New("Tricks can be added to level 2 sections only")
 	}
 
-	result := db.Create(&t)
+	result = db.Create(&t)
 	if result.Error != nil {
 		logger.Log.Error(result.Error)
 		return nil, result.Error
