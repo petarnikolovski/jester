@@ -219,7 +219,7 @@ paths:
       tags:
       - sections
   /sections/{sectionId}/tricks:
-    post:
+    get:
       consumes:
       - application/json
       description: list tricks for a subsection
@@ -237,6 +237,24 @@ paths:
           schema:
             $ref: '#/definitions/v1.Error'
       summary: List tricks for a subsection
+      tags:
+      - sections
+    post:
+      consumes:
+      - application/json
+      description: create a new trick and associate it with subsection
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Trick'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.Error'
+      summary: Create a trick
       tags:
       - sections
   /sections/levels:

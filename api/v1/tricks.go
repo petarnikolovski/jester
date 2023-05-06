@@ -54,7 +54,7 @@ func createTrick(c *gin.Context) {
 // @Produce      json
 // @Success      200  {object}  []models.Trick
 // @Failure		 400  {object}  Error
-// @Router       /sections/{sectionId}/tricks [post]
+// @Router       /sections/{sectionId}/tricks [get]
 func listTricks(c *gin.Context) {
 	user, ok := c.Get("user")
 	if !ok {

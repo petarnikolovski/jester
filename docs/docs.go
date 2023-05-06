@@ -201,7 +201,7 @@ const docTemplate = `{
             }
         },
         "/sections/{sectionId}/tricks": {
-            "post": {
+            "get": {
                 "description": "list tricks for a subsection",
                 "consumes": [
                     "application/json"
@@ -221,6 +221,33 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.Trick"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new trick and associate it with subsection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sections"
+                ],
+                "summary": "Create a trick",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Trick"
                         }
                     },
                     "400": {
