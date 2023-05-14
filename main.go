@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Depado/ginprom"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
@@ -37,6 +38,7 @@ import (
 // @externalDocs.url          https://jesthub.sh/docs
 func serve() {
 	router := gin.Default()
+	router.Use(cors.Default())
 
 	prometheus := ginprom.New(
 		ginprom.Engine(router),
