@@ -21,8 +21,7 @@ func (u *User) Save() (*User, error) {
 		return &User{}, err
 	}
 
-	result := db.Create(&u)
-	if result.Error != nil {
+	if result := db.Create(&u); result.Error != nil {
 		logger.Log.Error(result.Error)
 		return &User{}, result.Error
 	}

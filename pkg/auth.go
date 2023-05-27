@@ -62,8 +62,7 @@ func Login(data LoginUser) (string, error) {
 		return "", err
 	}
 
-	result := db.Model(&models.User{}).Where("email = ?", data.Email).Take(&user)
-	if result.Error != nil {
+	if result := db.Model(&models.User{}).Where("email = ?", data.Email).Take(&user); result.Error != nil {
 		return "", result.Error
 	}
 

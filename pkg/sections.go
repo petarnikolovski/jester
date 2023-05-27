@@ -34,8 +34,7 @@ func ListTopLevelSections(user *models.User) ([]models.Section, error) {
 	}
 
 	var topLevelSections []models.Section
-	results := db.Preload("User").Preload("Level").Where("user_id = ? AND section_id IS NULL", user.ID).Find(&topLevelSections)
-	if results.Error != nil {
+	if results := db.Preload("User").Preload("Level").Where("user_id = ? AND section_id IS NULL", user.ID).Find(&topLevelSections); results.Error != nil {
 		logger.Log.Error(results.Error)
 		return nil, results.Error
 	}
@@ -51,8 +50,7 @@ func ListSubsectionsByParentID(sectionID *uint, user *models.User) ([]models.Sec
 	}
 
 	var childSections []models.Section
-	results := db.Preload("User").Preload("Level").Where("section_id = ? AND user_id = ?", sectionID, user.ID).Find(&childSections)
-	if results.Error != nil {
+	if results := db.Preload("User").Preload("Level").Where("section_id = ? AND user_id = ?", sectionID, user.ID).Find(&childSections); results.Error != nil {
 		logger.Log.Error(results.Error)
 		return nil, results.Error
 	}

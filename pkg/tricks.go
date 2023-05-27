@@ -31,8 +31,7 @@ func ListTricks(user *models.User, sectionID *uint) ([]models.Trick, error) {
 	}
 
 	tricks := []models.Trick{}
-	result := db.Where("section_id = ? AND user_id = ?", sectionID, user.ID).Find(&tricks)
-	if result.Error != nil {
+	if result := db.Where("section_id = ? AND user_id = ?", sectionID, user.ID).Find(&tricks); result.Error != nil {
 		logger.Log.Error(err)
 		return nil, err
 	}

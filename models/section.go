@@ -29,22 +29,20 @@ func (s *Section) Save() (*Section, error) {
 		return &Section{}, errors.New("Subsection needs to have a parent section")
 	}
 
-	result := db.Create(&s)
-	if result.Error != nil {
+	if result := db.Create(&s); result.Error != nil {
 		logger.Log.Error(result.Error)
 		return &Section{}, result.Error
 	}
 
-	result = db.Preload("User").Preload("Level").First(&s, s.ID)
-	if result.Error != nil {
+	if result := db.Preload("User").Preload("Level").First(&s, s.ID); result.Error != nil {
 		logger.Log.Error(result.Error)
 		return &Section{}, result.Error
 	}
 
 	if s.SectionID != nil {
 		parentSection := Section{}
-		result = db.Model(&Section{}).First(&parentSection, s.SectionID)
-		if result.Error != nil {
+
+		if result := db.Model(&Section{}).First(&parentSection, s.SectionID); result.Error != nil {
 			logger.Log.Error(result.Error)
 			return &Section{}, result.Error
 		}
@@ -53,7 +51,10 @@ func (s *Section) Save() (*Section, error) {
 			return &Section{}, errors.New("User must be owner of the section")
 		}
 
-		result = db.Preload("Section").First(&s, s.ID)
+		if result := db.Preload("Section").First(&s, s.ID); result.Error != nil {
+			logger.Log.Error(result.Error)
+			return &Section{}, result.Error
+		}
 	}
 
 	return s, nil
